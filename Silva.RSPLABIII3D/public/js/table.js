@@ -1,6 +1,6 @@
 import { createFormEditDelete } from "./form.js";
 // import { updateList, deleteNodes, getFilteredInfo } from "./controller_crud_local_xhr.js";
-import { updateList, deleteNodes, calcularPromedio, calcularPromedioPot, calcularMinimo, calcularMaximo } from "./controller_crud_local_fetch.js";
+import { updateList, deleteNodes, calcularPromMinMax } from "./controller_crud_local_fetch.js";
 // import { updateList, deleteNodes, getFilteredInfo } from "./controller_crud_local_axios.js";
 export { createTable, createFilters, hideColumns, loadColumnsMenu, saveFilters };
 
@@ -256,7 +256,7 @@ function createFilterSelect(div) {
 
 function saveFilters(unselected) {
     localStorage.setItem('unselected', JSON.stringify(unselected));
-    console.log(JSON.stringify(unselected));
+    // console.log(JSON.stringify(unselected));
 }
 
 function loadColumnsMenu() {
@@ -301,7 +301,6 @@ function loadColumnsMenu() {
             div.appendChild(checkDiv);
         });
     }
-
     return div;
 }
 
@@ -319,7 +318,8 @@ function hideColumns(unselected, activeFilters) {
         }
     }
 
-    calcularPromedio(newInfo);
+    // calcularPromedio(newInfo);
+    calcularPromMinMax(newInfo, 'inputAvg', '=');
 
     if (unselected) {
         newInfo.forEach(element => {

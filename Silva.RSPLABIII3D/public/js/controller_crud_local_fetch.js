@@ -1,6 +1,6 @@
 import { createFilters, createTable, loadColumnsMenu } from "./table.js";
 import { createForm } from "./form.js";
-export { getInfo, postInfo, updateInfo, deleteInfo, getFilteredInfo, emptyForm, loadInitalForm, updateList, deleteNodes, calcularPromedio, calcularPromedioPot, calcularMinimo, calcularMaximo };
+export { getInfo, postInfo, updateInfo, deleteInfo, getFilteredInfo, emptyForm, loadInitalForm, updateList, deleteNodes, calcularPromMinMax };
 
 function getInfo() {
     //FETCH
@@ -165,10 +165,10 @@ function updateList(list) {
     if (list.length > 0) {
         filters.appendChild(createFilters());
         columns.appendChild(loadColumnsMenu());
-        calcularPromedio(list);
-        calcularPromedioPot(list);
-        calcularMinimo(list);
-        calcularMaximo(list);
+        calcularPromMinMax(list, 'inputAvg', '=');
+        calcularPromMinMax(list, 'inputAvgP', '=p');
+        calcularPromMinMax(list, 'inputMax', '+');
+        calcularPromMinMax(list, 'inputMin', '-');
     }
 }
 
@@ -221,7 +221,6 @@ function getFilteredInfo(filter) {
     }
 
     updateList(tableDiv, filteredData);
-    //cambio de estado del boton filtro
     let sinFiltro = document.getElementById('optionPlaceholder');
     let filtroSeleccionado = document.getElementById('option' + filter);
     sinFiltro.selected = false;
@@ -229,42 +228,77 @@ function getFilteredInfo(filter) {
 
 }
 
-function calcularPromedio(datos) {
-    let inputAvg = document.getElementById('inputAvg');
+// function calcularPromedio(datos) {
+//     let inputAvg = document.getElementById('inputAvg');
 
-    let promedio = parseFloat(datos.reduce((prev, actual) => {
-        return prev + parseFloat(actual.precio);
-    }, 0.0) / datos.length);
+//     let promedio = parseFloat(datos.reduce((prev, actual) => {
+//         return prev + parseFloat(actual.precio);
+//     }, 0.0) / datos.length);
 
-    inputAvg.value = promedio;
-}
+//     inputAvg.value = promedio;
+// }
 
-function calcularPromedioPot(datos) {
-    let inputAvgP = document.getElementById('inputAvgP');
+// function calcularPromedioPot(datos) {
+//     let inputAvgP = document.getElementById('inputAvgP');
 
-    let promedio = parseFloat(datos.reduce((prev, actual) => {
-        return prev + parseFloat(actual.potencia);
-    }, 0.0) / datos.length);
+//     let promedio = parseFloat(datos.reduce((prev, actual) => {
+//         return prev + parseFloat(actual.potencia);
+//     }, 0.0) / datos.length);
 
-    inputAvgP.value = promedio;
-}
+//     inputAvgP.value = promedio;
+// }
 
-function calcularMinimo(datos) {
-    let inputMin = document.getElementById('inputMin');
+// function calcularMinimo(datos) {
+//     let inputMin = document.getElementById('inputMin');
 
-    let minimo = parseFloat(datos.reduce((prev, actual) => {
-        return prev < parseFloat(actual.precio) ? prev : parseFloat(actual.precio);
-    }, 9999999));
+//     let minimo = parseFloat(datos.reduce((prev, actual) => {
+//         return prev < parseFloat(actual.precio) ? prev : parseFloat(actual.precio);
+//     }, 9999999));
 
-    inputMin.value = minimo;
-}
+//     inputMin.value = minimo;
+// }
 
-function calcularMaximo(datos) {
-    let inputMax = document.getElementById('inputMax');
+// function calcularMaximo(datos) {
+//     let inputMax = document.getElementById('inputMax');
 
-    let maximo = parseFloat(datos.reduce((prev, actual) => {
-        return prev > parseFloat(actual.precio) ? prev : parseFloat(actual.precio);
-    }, 0));
+//     let maximo = parseFloat(datos.reduce((prev, actual) => {
+//         return prev > parseFloat(actual.precio) ? prev : parseFloat(actual.precio);
+//     }, 0));
 
-    inputMax.value = maximo;
+//     inputMax.value = maximo;
+// }
+
+function calcularPromMinMax(datos, id, tipo) {
+    let input = document.getElementById(id);
+
+    switch (tipo) {
+        case '=':
+            let promedio = parseFloat(datos.reduce((prev, actual) => {
+                return prev + parseFloat(actual.precio);
+            }, 0.0) / datos.length);
+
+            input.value = promedio;
+            break;
+        case '=p':
+            let promediop = parseFloat(datos.reduce((prev, actual) => {
+                return prev + parseFloat(actual.potencia);
+            }, 0.0) / datos.length);
+
+            input.value = promediop;
+            break;
+        case '+':
+            let maximo = parseFloat(datos.reduce((prev, actual) => {
+                return prev > parseFloat(actual.precio) ? prev : parseFloat(actual.precio);
+            }, 0));
+
+            input.value = maximo;
+            break;
+        case '-':
+            let minimo = parseFloat(datos.reduce((prev, actual) => {
+                return prev < parseFloat(actual.precio) ? prev : parseFloat(actual.precio);
+            }, 9999999));
+
+            input.value = minimo;
+            break;
+    }
 }
