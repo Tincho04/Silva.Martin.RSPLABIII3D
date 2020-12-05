@@ -1,0 +1,25 @@
+header,
+footer {
+    background-color: orange;
+    /* color: black; */
+}
+
+#tableDiv {
+    overflow-x: auto;
+}
+
+#formDiv {
+    background-color: #c8c8c8;
+    width: 1000px;
+    height: 650px;
+    /* margin: 150px; */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    box-sizing: border-box;
+    text-align: center;
+}
